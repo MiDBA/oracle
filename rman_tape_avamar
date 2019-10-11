@@ -1,0 +1,16 @@
+CONFIGURE RETENTION POLICY TO RECOVERY WINDOW OF 30 DAYS;
+
+allocate channel c1 type 'SBT_TAPE' PARMS="SBT_LIBRARY=/opt/AVMRclnt/lib/libobk_avamar64.so" format '%d_%U';
+allocate channel c2 type 'SBT_TAPE' PARMS="SBT_LIBRARY=/opt/AVMRclnt/lib/libobk_avamar64.so" format '%d_%U';
+allocate channel c3 type 'SBT_TAPE' PARMS="SBT_LIBRARY=/opt/AVMRclnt/lib/libobk_avamar64.so" format '%d_%U';
+allocate channel c4 type 'SBT_TAPE' PARMS="SBT_LIBRARY=/opt/AVMRclnt/lib/libobk_avamar64.so" format '%d_%U';
+send '"--prefix=11g/orcl/" "--flagfile=/u02/orascripts/avamar/avamar.flag" "--bindir=/opt/AVMRclnt/bin"';
+
+CROSSCHECK BACKUP;
+DELETE NOPROMPT EXPIRED BACKUP;
+DELETE NOPROMPT OBSOLETE RECOVERY WINDOW OF 30 days;
+
+release channel c1;
+release channel c2;
+release channel c3;
+release channel c4;
