@@ -1,0 +1,7 @@
+userid=lowej5@champsfp
+logfile=champsfp_core_imp.log
+network_link=CORE_IMP
+directory=EFNTMP_WORKING_DIR
+schemas=CHAMPS_FPOS_INT
+transform=DISABLE_ARCHIVE_LOGGING:Y
+exclude=statistics
