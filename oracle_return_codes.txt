@@ -1,0 +1,24 @@
+28000: the account is locked 
+28001 - Account expired
+28150 - proxy not authorized to connect as client
+2002 - WAIT_FAILURE_SERVER
+4021 - timeout occurred while waiting to lock object
+2004 - Security Violation
+1017 - Invalid password and/or username.
+1031 - Insufficent Privilege
+1045 - Access Denied
+1847 - Day of Month error
+1840 - input value not long enough for date format
+20001 - Numeric or Value Error: Character string buffer too small
+02291 - integrity constraint <constraint name> violated - parent key not found
+02290 - check constraint <constraint_name> violated
+28007 - The password cannot be reused
+0 Success
+01920 User already exists
+01951 
+00955 - name is already used by an existing object
+00060: Deadlock detected while waiting for resource
+
+1 - Validation Error
+
+ORA-28 Session has been killed
