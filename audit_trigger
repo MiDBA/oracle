@@ -1,0 +1,13 @@
+drop table login_audit_t;
+create table login_audit_t (login_data varchar2(100),usr_name varchar2(100),hst_name varchar2(100), created_time timestamp default sysdate) tablespace PSAPTT1USR;
+
+create or replace trigger logon_audit_trigger AFTER LOGON ON DATABASE
+BEGIN
+insert into login_audit_t (login_data, usr_name,hst_name,created_time) values (user, sys_context( 'userenv', 'os_user'), sys_context( 'userenv', 'host'),sysdate );
+commit;
+END;
+
+col LOGIN_DATA format a20
+col USR_NAME format a20
+col HST_NAME format a20
+select * from login_audit_t order by created_time desc;
