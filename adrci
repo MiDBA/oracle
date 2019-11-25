@@ -1,0 +1,5 @@
+adrci> show homes
+adrci> set homepath diag/rdbms/db_name/SID
+adrci> show incident
+adrci> ips pack incident 101952 in /tmp
+SHOW INCIDENT -orderby CREATE_TIME desc
