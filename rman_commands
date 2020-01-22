@@ -1,0 +1,2 @@
+DELETE NOPROMPT ARCHIVELOG ALL
+delete archivelog until time 'sysdate -5';
