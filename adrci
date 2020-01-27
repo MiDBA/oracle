@@ -14,3 +14,6 @@ adrci> set control (LONGP_POLICY = 2160) //Sets long-lived policy to 3 Months
 
 --to purge to default schedule
 adrci> purge
+
+
+https://support.oracle.com/epmos/faces/DocumentDisplay?_afrLoop=212438059345166&id=1196437.1&_afrWindowMode=0&_adf.ctrl-state=19sj2s2jil_4
