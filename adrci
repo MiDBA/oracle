@@ -7,3 +7,10 @@ SHOW INCIDENT -orderby CREATE_TIME desc
 
 set control \(SHORTP_POLICY=720\);
 set control \(LONGP_POLICY=720\);
+
+--policy in hours
+adrci> set control (SHORTP_POLICY = 360) //Sets short-lived policy to 15 Days
+adrci> set control (LONGP_POLICY = 2160) //Sets long-lived policy to 3 Months
+
+--to purge to default schedule
+adrci> purge
