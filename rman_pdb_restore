@@ -1,0 +1,19 @@
+alter pluggable database PDB close instances=all;
+
+create pluggable database PDB_BK from PDB KEYSTORE IDENTIFIED BY "pwd";
+
+run {
+allocate channel ch1 type 'sbt_tape'
+PARMS="SBT_LIBRARY=/opt/commvault/Base/libobk.so,BLKSIZE=1048576,ENV=(CvClientName=host,CvInstancename=Instance001)" ;
+allocate channel ch2 type 'sbt_tape'
+PARMS="SBT_LIBRARY=/opt/commvault/Base/libobk.so,BLKSIZE=1048576,ENV=(CvClientName=host,CvInstancename=Instance001)" ;
+allocate channel ch3 type 'sbt_tape'
+PARMS="SBT_LIBRARY=/opt/commvault/Base/libobk.so,BLKSIZE=1048576,ENV=(CvClientName=host,CvInstancename=Instance001)" ;
+allocate channel ch4 type 'sbt_tape'
+PARMS="SBT_LIBRARY=/opt/commvault/Base/libobk.so,BLKSIZE=1048576,ENV=(CvClientName=host,CvInstancename=Instance001)" ;
+set until time "to_date('01/16/2020 11:00:00','MM/DD/YYYY HH24:MI:SS')";
+  RESTORE PLUGGABLE DATABASE SISPRD;
+  RECOVER PLUGGABLE DATABASE SISPRD;
+}
+
+ALTER PLUGGABLE DATABASE PDB OPEN RESETLOGS;
