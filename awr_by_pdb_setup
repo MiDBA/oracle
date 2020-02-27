@@ -1,0 +1,41 @@
+AWR Snapshots and Reports from Oracle Multitentant Database(CDB, PDB) (Doc ID 2295998.1)
+
+--Manually create snapshot at PDB Level
+--alter session set container=PDB1;
+--exec dbms_workload_repository.create_snapshot();
+
+--Configuration for automatic creation of PDB AWR snapshots.
+alter session set container = CDB$ROOT;
+alter system set AWR_PDB_AUTOFLUSH_ENABLED = TRUE scope = both;
+--(AWR_SNAPSHOT_TIME_OFFSET=1000000 specifice automatic timing mode)
+alter system set AWR_SNAPSHOT_TIME_OFFSET=1000000 scope = both; 
+
+select p.name, c.dbid, c.snap_interval,c.retention,c.con_id,c.src_dbid
+from cdb_hist_wr_control c, v$pdbs p
+where c.con_id=p.con_id
+and p.con_id is not null
+order by p.con_id;
+
+--(Retention & interval in minutes)
+alter session set container=PDB1;
+exec dbms_workload_repository.modify_snapshot_settings(interval => 60, retention => 20160, dbid => 1150435017);
+
+alter session set container = CDB$ROOT;
+select * from cdb_hist_wr_control;
+
+
+alter session set container=CDB$ROOT;
+select con_id, instance_number, snap_id, begin_interval_time, end_interval_time
+from cdb_hist_snapshot 
+where con_id <>0
+order by 1,2,3;
+
+--Create PDB AWR Report (only if PDB snapshots have been created)
+alter session set container=PDB1;
+@?/rdbms/admin/awrrpt
+
+
+
+
+https://docs.oracle.com/database/121/ARPLS/d_workload_repos.htm#ARPLS69142
+https://docs.oracle.com/en/database/oracle/oracle-database/12.2/refrn/AWR_SNAPSHOT_TIME_OFFSET.html#GUID-90CD8379-DCB2-4681-BB90-0A32C6029C4E
