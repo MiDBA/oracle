@@ -1,0 +1,3 @@
+alter system set LOCAL_LISTENER="(ADDRESS_LIST=
+(ADDRESS=(PROTOCOL=TCP)(HOST=host-vip.sia.net.com)(PORT=1530))
+(ADDRESS=(PROTOCOL=TCP)(HOST=hostname.sia.com.net)(PORT=1521)))";
