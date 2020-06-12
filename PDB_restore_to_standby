@@ -1,0 +1,90 @@
+Making Use Deferred PDB Recovery and the STANDBYS=NONE Feature with Oracle Multitenant (Doc ID 1916648.1)
+
+dgmgrl
+connect sys/pwd@SID
+show configuration
+validate database ggaqdg
+
+--Look at CURRENT deletion policy
+RMAN> show archivelog deletion policy;
+CONFIGURE ARCHIVELOG DELETION POLICY TO APPLIED ON ALL STANDBY;
+
+--both primary and standby
+RMAN>
+configure archivelog deletion policy to none;
+
+--PDB must be open on primary
+
+--From STANDBY in MOUNT
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE CANCEL;
+
+--Stop redo apply
+DGMGRL> edit database GGAQDG set state='apply-off';
+DGMGRL> show configuration
+
+RMAN>
+run{
+set newname for pluggable database SISQA to new;
+restore pluggable database SISQA from service GGAQ;
+}
+
+RMAN> switch pluggable database SISQA to copy;
+
+--create datafiles script
+SQL>
+alter session set container=SISQA;
+set lines 120
+set pages 9999
+spool online_files.sql
+select 'alter database datafile '||''''||name||''''||' online;' from v$datafile;
+
+alter session set container=SISQA;
+
+alter pluggable database enable recovery;
+
+--Run Datafiles online script
+@online_files
+
+
+
+DGMGRL> edit database GGAQDG set state='apply-on';
+
+SQL> alter database open;
+
+Turn on archive log deletion policy both Primary and Standby
+CONFIGURE ARCHIVELOG DELETION POLICY TO APPLIED ON STANDBY;
+
+startup mount
+
+alter database open
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE USING CURRENT LOGFILE DISCONNECT; 
+
+
+
+--notes
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE DISCONNECT; 
+ALTER SYSTEM SET ENCRYPTION WALLET OPEN IDENTIFIED BY "pwd";
+
+ select * from v$encryption_wallet;
+ 
+ADMINISTER KEY MANAGEMENT SET KEY IDENTIFIED BY "pwd" WITH BACKUP CONTAINER=ALL;
+ 
+cd /var/opt/oracle/dbaas_acfs/GGAQDG/tde_wallet/
+
+**On Standby Server
+scp oracc101vm05:/var/opt/oracle/dbaas_acfs/GGAQ/tde_wallet/ewallet.p12 .
+scp oracc101vm05:/var/opt/oracle/dbaas_acfs/GGAQ/tde_wallet/cwallet.sso .
+
+
+
+
+alter tablespace temp add tempfile '+DATAC3' size 100M reuse autoextend on next 100M maxsize unlimited;
+alter tablespace PSTEMP add tempfile '+DATAC3' size 100M reuse autoextend on next 100M maxsize unlimited;
+alter tablespace PSGTT01 add tempfile '+DATAC3' size 100M reuse autoextend on next 100M maxsize unlimited;
+
+
+
+
+
+
+
