@@ -1,0 +1,25 @@
+DECLARE
+  l_sql_tune_task_id  VARCHAR2(100);
+BEGIN
+  l_sql_tune_task_id := DBMS_SQLTUNE.create_tuning_task (
+                          sql_id      => '991vqtmct538b',
+                          scope       => DBMS_SQLTUNE.scope_comprehensive,
+                          time_limit  => 500,
+                          task_name   => '991vqtmct538b8_tuning_task11',
+                          description => 'Tuning task1 for statement 991vqtmct538b');
+  DBMS_OUTPUT.put_line('l_sql_tune_task_id: ' || l_sql_tune_task_id);
+END;
+/
+ 
+EXEC DBMS_SQLTUNE.execute_tuning_task(task_name => '991vqtmct538b8_tuning_task11'); 
+
+set long 65536
+set longchunksize 65536
+set linesize 100
+select dbms_sqltune.report_tuning_task('991vqtmct538b8_tuning_task11') from dual;
+
+--get non SYS tuning tasks
+SELECT TASK_NAME, STATUS FROM DBA_ADVISOR_LOG WHERE TASK_NAME not like 'SYS_AUTO%' ;
+
+--drop a tuning task
+execute dbms_sqltune.drop_tuning_task('task_name');
