@@ -6,6 +6,11 @@ SHOW INCIDENT -orderby CREATE_TIME desc
 
 show incident -mode detail -p "incident_id=72697"
 
+show trace /u02/app/oracle/diag/rdbms/ggap/GGAP2/incident/incdir_282821/GGAP2_ora_298143_i282821.trc
+
+show control
+
+
 set control \(SHORTP_POLICY=720\);
 set control \(LONGP_POLICY=720\);
 
