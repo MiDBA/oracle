@@ -4,6 +4,7 @@ adrci> show incident
 adrci> ips pack incident 101952 in /tmp
 SHOW INCIDENT -orderby CREATE_TIME desc
 
+show incident -mode detail -p "incident_id=72697"
 
 set control \(SHORTP_POLICY=720\);
 set control \(LONGP_POLICY=720\);
